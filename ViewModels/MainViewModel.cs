@@ -9,6 +9,7 @@ namespace CurrencyApp.ViewModels;
 public partial class MainViewModel : ObservableObject
 {
     private readonly CurrencyApiService _apiService;
+    private readonly IStorageService _storage;
 
     [ObservableProperty]
     private ObservableCollection<Currency> _currencies = new();
@@ -22,15 +23,40 @@ public partial class MainViewModel : ObservableObject
     public MainViewModel()
     {
         _apiService = new CurrencyApiService();
+        _storage = new JsonStorageService();
+
+        _ = LoadFromStorageAsync();
+    }
+
+    private async Task LoadFromStorageAsync()
+    {
+        try
+        {
+            var stored = await _storage.LoadAsync();
+
+            Currencies.Clear();
+            foreach (var currency in stored)
+            {
+                Currencies.Add(currency);
+            }
+
+            StatusMessage = stored.Count > 0
+                ? $"Loaded {stored.Count} currencies from local storage"
+                : "No local data — click 'Refresh' to fetch";
+        }
+        catch (Exception ex)
+        {
+            StatusMessage = $"Failed to load local data: {ex.Message}";
+        }
     }
 
     [RelayCommand]
-    private async Task LoadCurrenciesAsync()
+    private async Task RefreshAsync()
     {
         try
         {
             IsLoading = true;
-            StatusMessage = "Loading currencies...";
+            StatusMessage = "Fetching latest rates...";
 
             var fetched = await _apiService.FetchCurrenciesAsync();
 
@@ -40,11 +66,13 @@ public partial class MainViewModel : ObservableObject
                 Currencies.Add(currency);
             }
 
-            StatusMessage = $"Loaded {Currencies.Count} currencies";
+            await _storage.SaveAsync(fetched);
+
+            StatusMessage = $"Refreshed: {fetched.Count} currencies";
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Error: {ex.Message}";
+            StatusMessage = $"Refresh failed: {ex.Message}";
         }
         finally
         {

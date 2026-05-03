@@ -31,8 +31,8 @@
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     Margin="0,0,0,12">
-            <Button Content="Load currencies"
-                    Command="{Binding LoadCurrenciesCommand}"
+            <Button Content="Refresh"
+                    Command="{Binding RefreshCommand}"
                     Padding="12,6"
                     IsEnabled="{Binding IsLoading, Converter={x:Static vm:InverseBooleanConverter.Instance}}" />
         </StackPanel>
