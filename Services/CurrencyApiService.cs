@@ -24,7 +24,6 @@ public class CurrencyApiService
             return new List<Currency>();
         }
 
-        // Convert the dictionary to a flat list — easier for the UI to bind to
         return response.Valute.Values.ToList();
     }
 }
