@@ -25,8 +25,7 @@ public class Currency
     [JsonPropertyName("Previous")]
     public decimal Previous { get; set; }
 
-    // Not from API — marks currencies the user added manually
-    // so refresh from the API doesn't overwrite them
-    [JsonIgnore]
+    // Marks currencies the user added manually so refresh from the API
+    // doesn't overwrite them. Not present in the API JSON — defaults to false there.
     public bool IsUserAdded { get; set; }
 }

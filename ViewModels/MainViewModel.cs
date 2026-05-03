@@ -60,15 +60,24 @@ public partial class MainViewModel : ObservableObject
 
             var fetched = await _apiService.FetchCurrenciesAsync();
 
+            // Load existing data and preserve user-added entries
+            var existing = await _storage.LoadAsync();
+            var userAdded = existing.Where(c => c.IsUserAdded).ToList();
+
+            // Merged list: API data first, then user-added entries appended
+            var merged = new List<Currency>();
+            merged.AddRange(fetched);
+            merged.AddRange(userAdded);
+
             Currencies.Clear();
-            foreach (var currency in fetched)
+            foreach (var currency in merged)
             {
                 Currencies.Add(currency);
             }
 
-            await _storage.SaveAsync(fetched);
+            await _storage.SaveAsync(merged);
 
-            StatusMessage = $"Refreshed: {fetched.Count} currencies";
+            StatusMessage = $"Refreshed: {fetched.Count} from API, {userAdded.Count} user-added";
         }
         catch (Exception ex)
         {

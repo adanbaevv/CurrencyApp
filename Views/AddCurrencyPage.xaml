@@ -1,12 +1,79 @@
 ﻿<Page x:Class="CurrencyApp.Views.AddCurrencyPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:CurrencyApp.ViewModels"
       Title="Add Currency">
 
-    <Grid Margin="16">
-        <TextBlock Text="Add Currency page (coming soon)"
-                   FontSize="20"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+    <Page.DataContext>
+        <vm:AddCurrencyViewModel />
+    </Page.DataContext>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Add Custom Currency"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,20" />
+
+        <!-- Code -->
+        <StackPanel Grid.Row="1" Margin="0,0,0,12">
+            <TextBlock Text="Code (e.g., USD)" Margin="0,0,0,4" />
+            <TextBox Text="{Binding CharCode, UpdateSourceTrigger=PropertyChanged}"
+                     MaxLength="10"
+                     Padding="8,6"
+                     Width="300"
+                     HorizontalAlignment="Left" />
+        </StackPanel>
+
+        <!-- Name -->
+        <StackPanel Grid.Row="2" Margin="0,0,0,12">
+            <TextBlock Text="Name" Margin="0,0,0,4" />
+            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                     MaxLength="100"
+                     Padding="8,6"
+                     Width="400"
+                     HorizontalAlignment="Left" />
+        </StackPanel>
+
+        <!-- Nominal -->
+        <StackPanel Grid.Row="3" Margin="0,0,0,12">
+            <TextBlock Text="Nominal (number of units)" Margin="0,0,0,4" />
+            <TextBox Text="{Binding NominalText, UpdateSourceTrigger=PropertyChanged}"
+                     Padding="8,6"
+                     Width="150"
+                     HorizontalAlignment="Left" />
+        </StackPanel>
+
+        <!-- Value -->
+        <StackPanel Grid.Row="4" Margin="0,0,0,16">
+            <TextBlock Text="Value (in RUB)" Margin="0,0,0,4" />
+            <TextBox Text="{Binding ValueText, UpdateSourceTrigger=PropertyChanged}"
+                     Padding="8,6"
+                     Width="200"
+                     HorizontalAlignment="Left" />
+        </StackPanel>
+
+        <!-- Submit -->
+        <Button Grid.Row="5"
+                Content="Add Currency"
+                Command="{Binding AddCommand}"
+                Padding="16,8"
+                HorizontalAlignment="Left" />
+
+        <!-- Status -->
+        <TextBlock Grid.Row="6"
+                   Text="{Binding StatusMessage}"
+                   Margin="0,16,0,0"
+                   Foreground="Gray" />
     </Grid>
 </Page>
