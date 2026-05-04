@@ -23,50 +23,94 @@
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,12">
             <TextBlock Text="Currency Exchange Rates"
-               FontSize="24"
-               FontWeight="SemiBold" />
+                       FontSize="24"
+                       FontWeight="SemiBold" />
             <TextBlock Text="{Binding LastSessionInfo}"
-               Foreground="Gray"
-               FontSize="12"
-               Margin="0,4,0,0" />
+                       Foreground="Gray"
+                       FontSize="12"
+                       Margin="0,4,0,0" />
             <TextBlock Text="{Binding StorageModeInfo}"
-               Foreground="Gray"
-               FontSize="12" />
+                       Foreground="Gray"
+                       FontSize="12" />
         </StackPanel>
 
         <!-- Toolbar -->
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     Margin="0,0,0,12">
-            <Button Content="Refresh"
-                    Command="{Binding RefreshCommand}"
-                    Padding="12,6"
-                    IsEnabled="{Binding IsLoading, Converter={x:Static vm:InverseBooleanConverter.Instance}}" />
+                <Button Content="Refresh from API"
+                        Command="{Binding RefreshCommand}"
+                        Padding="16,8"
+                        FontWeight="SemiBold"
+                        Background="#4A9EFF"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Cursor="Hand"
+                        IsEnabled="{Binding IsLoading, Converter={x:Static vm:InverseBooleanConverter.Instance}}" />
+
+                <TextBlock Text="Loading…"
+                           Foreground="Gray"
+                           VerticalAlignment="Center"
+                           Margin="12,0,0,0"
+                           Visibility="{Binding IsLoading, Converter={x:Static vm:BooleanToVisibilityConverter.Instance}}" />
         </StackPanel>
 
         <!-- Currency list -->
         <ListView Grid.Row="2"
                   ItemsSource="{Binding Currencies}">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsUserAdded}" Value="True">
+                            <Setter Property="Background" Value="#FFF8E1" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Code" Width="80"
                     DisplayMemberBinding="{Binding CharCode}" />
                     <GridViewColumn Header="Name" Width="280"
                     DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Nominal" Width="80"
-                    DisplayMemberBinding="{Binding Nominal}" />
-                    <GridViewColumn Header="Value" Width="120"
-                    DisplayMemberBinding="{Binding Value}" />
-                    <GridViewColumn Header="Previous" Width="120"
-                    DisplayMemberBinding="{Binding Previous}" />
+                    <GridViewColumn Header="Nominal" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Nominal}"
+                                           HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Value (RUB)" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Value, StringFormat='N4'}"
+                                           HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Previous (RUB)" Width="120">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Previous, StringFormat='N4'}"
+                                           HorizontalAlignment="Right" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn Header="" Width="80">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Content="Delete"
-                        Padding="8,2"
-                        Command="{Binding DataContext.DeleteCommand,
-                                  RelativeSource={RelativeSource AncestorType=Page}}"
-                        CommandParameter="{Binding}" />
+                                        Padding="10,4"
+                                        Background="Transparent"
+                                        Foreground="#C04040"
+                                        BorderBrush="#C04040"
+                                        Cursor="Hand"
+                                        Command="{Binding DataContext.DeleteCommand,
+                                                  RelativeSource={RelativeSource AncestorType=Page}}"
+                                        CommandParameter="{Binding}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>

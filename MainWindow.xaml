@@ -7,12 +7,38 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#1E1F22" />
+        <SolidColorBrush x:Key="SidebarTextBrush" Color="#E8E8E8" />
+        <SolidColorBrush x:Key="SidebarHoverBrush" Color="#2D2E32" />
+        <SolidColorBrush x:Key="SidebarAccentBrush" Color="#4A9EFF" />
+
         <Style x:Key="NavButtonStyle" TargetType="Button">
             <Setter Property="HorizontalContentAlignment" Value="Left" />
-            <Setter Property="Padding" Value="16,10" />
+            <Setter Property="Padding" Value="20,12" />
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource SidebarTextBrush}" />
             <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{TemplateBinding Background}"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Left"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd"
+                                        Property="Background"
+                                        Value="{StaticResource SidebarHoverBrush}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
     </Window.Resources>
 
@@ -23,12 +49,14 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <Border Grid.Column="0" Background="#F3F3F3" BorderBrush="#DDD" BorderThickness="0,0,1,0">
+        <Border Grid.Column="0"
+        Background="{StaticResource SidebarBackgroundBrush}">
             <StackPanel Margin="0,16,0,0">
                 <TextBlock Text="Currency App"
-                           FontSize="18"
+                           FontSize="20"
                            FontWeight="SemiBold"
-                           Margin="16,0,16,16" />
+                           Foreground="{StaticResource SidebarTextBrush}"
+                           Margin="20,0,20,24" />
 
                 <Button Content="Currencies"
                         Click="NavCurrencies_Click"
