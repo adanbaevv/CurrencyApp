@@ -21,11 +21,15 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <TextBlock Grid.Row="0"
-                   Text="Currency Exchange Rates"
-                   FontSize="24"
-                   FontWeight="SemiBold"
-                   Margin="0,0,0,12" />
+        <StackPanel Grid.Row="0" Margin="0,0,0,12">
+            <TextBlock Text="Currency Exchange Rates"
+               FontSize="24"
+               FontWeight="SemiBold" />
+            <TextBlock Text="{Binding LastSessionInfo}"
+               Foreground="Gray"
+               FontSize="12"
+               Margin="0,4,0,0" />
+        </StackPanel>
 
         <!-- Toolbar -->
         <StackPanel Grid.Row="1"
@@ -43,15 +47,26 @@
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Code" Width="80"
-                                    DisplayMemberBinding="{Binding CharCode}" />
+                    DisplayMemberBinding="{Binding CharCode}" />
                     <GridViewColumn Header="Name" Width="280"
-                                    DisplayMemberBinding="{Binding Name}" />
+                    DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Header="Nominal" Width="80"
-                                    DisplayMemberBinding="{Binding Nominal}" />
+                    DisplayMemberBinding="{Binding Nominal}" />
                     <GridViewColumn Header="Value" Width="120"
-                                    DisplayMemberBinding="{Binding Value}" />
+                    DisplayMemberBinding="{Binding Value}" />
                     <GridViewColumn Header="Previous" Width="120"
-                                    DisplayMemberBinding="{Binding Previous}" />
+                    DisplayMemberBinding="{Binding Previous}" />
+                    <GridViewColumn Header="" Width="80">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button Content="Delete"
+                        Padding="8,2"
+                        Command="{Binding DataContext.DeleteCommand,
+                                  RelativeSource={RelativeSource AncestorType=Page}}"
+                        CommandParameter="{Binding}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

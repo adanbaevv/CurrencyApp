@@ -20,12 +20,36 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string? _statusMessage;
 
+    [ObservableProperty]
+    private string? _lastSessionInfo;
+
     public MainViewModel()
     {
         _apiService = new CurrencyApiService();
         _storage = new JsonStorageService();
 
+        LoadSessionInfo();
+
         _ = LoadFromStorageAsync();
+    }
+
+    private void LoadSessionInfo()
+    {
+        var settingsService = new AppSettingsService();
+        var settings = settingsService.Load();
+
+        if (settings.LastSessionTime.HasValue)
+        {
+            LastSessionInfo = $"Last session: {settings.LastSessionTime.Value:yyyy-MM-dd HH:mm:ss}";
+        }
+        else
+        {
+            LastSessionInfo = "First session";
+        }
+
+        // Save current session time so the next launch sees it
+        settings.LastSessionTime = DateTime.Now;
+        settingsService.Save(settings);
     }
 
     private async Task LoadFromStorageAsync()
@@ -87,5 +111,20 @@ public partial class MainViewModel : ObservableObject
         {
             IsLoading = false;
         }
+    }
+
+    [RelayCommand]
+    private async Task DeleteAsync(Currency? currency)
+    {
+        if (currency is null)
+            return;
+
+        Currencies.Remove(currency);
+
+        // Persist the change
+        var current = Currencies.ToList();
+        await _storage.SaveAsync(current);
+
+        StatusMessage = $"Deleted {currency.CharCode}";
     }
 }
