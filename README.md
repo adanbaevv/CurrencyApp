@@ -60,6 +60,7 @@ The `IsUserAdded` flag is absent from the API response and defaults to `false` f
 Requirements: Visual Studio 2022 with the .NET 10 SDK and the WPF workload installed.
 
 Open `CurrencyApp.sln` and press F5. No external configuration is needed. Internet access is required for the initial Refresh; subsequent launches load from local storage.
+After testing on different machine: if the very first build fails on the nuget package download, close and reopen the solution, then rebuild. Works fine after that.
 
 Application data is stored at `%LOCALAPPDATA%\CurrencyApp\`:
 - `currencies.json` — JSON-mode data
