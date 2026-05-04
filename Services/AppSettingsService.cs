@@ -6,6 +6,7 @@ namespace CurrencyApp.Services;
 public class AppSettings
 {
     public DateTime? LastSessionTime { get; set; }
+    public StorageMode StorageMode { get; set; } = StorageMode.Json;
 }
 
 public class AppSettingsService

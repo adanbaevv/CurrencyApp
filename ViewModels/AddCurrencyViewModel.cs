@@ -27,7 +27,8 @@ public partial class AddCurrencyViewModel : ObservableObject
 
     public AddCurrencyViewModel()
     {
-        _storage = new JsonStorageService();
+        var settings = new AppSettingsService().Load();
+        _storage = new CompositeStorageService(settings.StorageMode);
     }
 
     [RelayCommand]

@@ -1,12 +1,55 @@
 ﻿<Page x:Class="CurrencyApp.Views.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:CurrencyApp.ViewModels"
       Title="Settings">
 
-    <Grid Margin="16">
-        <TextBlock Text="Settings page (coming soon)"
-                   FontSize="20"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center" />
+    <Page.DataContext>
+        <vm:SettingsViewModel />
+    </Page.DataContext>
+
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Text="Storage Settings"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   Margin="0,0,0,16" />
+
+        <StackPanel Grid.Row="1" Margin="0,0,0,16">
+            <TextBlock Text="Where should currency data be stored?"
+                       Margin="0,0,0,8" />
+
+            <RadioButton GroupName="Storage"
+                         Content="JSON file only"
+                         IsChecked="{Binding IsJsonSelected}"
+                         Margin="0,4" />
+            <RadioButton GroupName="Storage"
+                         Content="SQLite database only"
+                         IsChecked="{Binding IsSqliteSelected}"
+                         Margin="0,4" />
+            <RadioButton GroupName="Storage"
+                         Content="Both (writes to both, reads from JSON)"
+                         IsChecked="{Binding IsBothSelected}"
+                         Margin="0,4" />
+        </StackPanel>
+
+        <Button Grid.Row="2"
+                Content="Save"
+                Command="{Binding SaveCommand}"
+                Padding="16,6"
+                HorizontalAlignment="Left" />
+
+        <TextBlock Grid.Row="3"
+                   Text="{Binding StatusMessage}"
+                   Foreground="Gray"
+                   Margin="0,12,0,0"
+                   TextWrapping="Wrap" />
     </Grid>
 </Page>

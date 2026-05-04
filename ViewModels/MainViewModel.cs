@@ -23,13 +23,18 @@ public partial class MainViewModel : ObservableObject
     [ObservableProperty]
     private string? _lastSessionInfo;
 
+    [ObservableProperty]
+    private string? _storageModeInfo;
+
     public MainViewModel()
     {
         _apiService = new CurrencyApiService();
-        _storage = new JsonStorageService();
+
+        var settings = new AppSettingsService().Load();
+        _storage = new CompositeStorageService(settings.StorageMode);
+        StorageModeInfo = $"Storage mode: {settings.StorageMode}";
 
         LoadSessionInfo();
-
         _ = LoadFromStorageAsync();
     }
 

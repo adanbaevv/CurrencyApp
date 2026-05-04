@@ -29,6 +29,9 @@
                Foreground="Gray"
                FontSize="12"
                Margin="0,4,0,0" />
+            <TextBlock Text="{Binding StorageModeInfo}"
+               Foreground="Gray"
+               FontSize="12" />
         </StackPanel>
 
         <!-- Toolbar -->
